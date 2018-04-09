@@ -237,7 +237,8 @@ public class HttpClient implements IHttp {
                 } else if (HttpOptions.TYPE_DATA.equals(type)) {
                     data = response.body().bytes();
                 } else if(HttpOptions.TYPE_JSON.equals(type)) {
-                    data = _gson.fromJson(response.body().string(),Object.class);
+                    String text = response.body().string();
+                    data = _gson.fromJson(text,Object.class);
                 } else {
                     data = response.body().string();
                 }
@@ -333,5 +334,7 @@ public class HttpClient implements IHttp {
         }
 
     }
+
+
 
 }
