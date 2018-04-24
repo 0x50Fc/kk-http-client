@@ -204,6 +204,10 @@ public class HttpClient implements IHttp {
                 if (key != null) {
 
                     String tmppath = HttpOptions.cacheTmpPathWithKey(_context, key);
+                    File dir = (new File(tmppath)).getParentFile();
+                    if(!dir.exists()) {
+                        dir.mkdirs();
+                    }
                     ResponseBody body = response.body();
                     InputStream in = body.byteStream();
 
@@ -238,7 +242,7 @@ public class HttpClient implements IHttp {
                     data = response.body().bytes();
                 } else if(HttpOptions.TYPE_JSON.equals(type)) {
                     String text = response.body().string();
-                    data = _gson.fromJson(text,Object.class);
+                    data = decodeJSON(text);
                 } else {
                     data = response.body().string();
                 }
@@ -304,6 +308,16 @@ public class HttpClient implements IHttp {
             }
         }
 
+    }
+
+    @Override
+    public String encodeJSON(Object object) {
+        return _gson.toJson(object);
+    }
+
+    @Override
+    public Object decodeJSON(String text) {
+        return _gson.fromJson(text,Object.class);
     }
 
     void remove(HttpTask httpTask,String key) {
