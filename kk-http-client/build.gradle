@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 25
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion MIN_SDK_VERSION as int
         versionCode 1
         versionName "1.0"
 
@@ -21,14 +22,46 @@ android {
     }
 }
 
+repositories {
+    jcenter()
+    maven {
+        url MAVEN_REPO_RELEASE_URL
+    }
+}
+
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    provided 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile 'com.google.code.gson:gson:2.8.2'
     testCompile 'junit:junit:4.12'
-    compile project(':kk-http')
+//    compile project(':kk-http')
+    compile 'com.sina.weibo.lib.kk:http:' + CURRENTVERSION
+
+
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: MAVEN_REPO_RELEASE_URL) {
+                authentication(userName: USERNAME, password: PASSWORD)
+            }
+            pom.project {
+                version DEPENDENCIESVERSION
+                artifactId 'http-client'
+                groupId GROUPID
+                packaging TYPE
+                description DESCRIPTION
+            }
+        }
+    }
 }
