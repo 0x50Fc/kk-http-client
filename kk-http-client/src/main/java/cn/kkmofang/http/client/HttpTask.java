@@ -19,7 +19,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 /**
- * Created by hailong11 on 2018/4/8.
+ * Created by zhanghailong on 2018/4/8.
  */
 
 class HttpTask implements IHttpTask{
