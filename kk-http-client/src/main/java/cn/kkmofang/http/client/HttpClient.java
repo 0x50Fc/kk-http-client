@@ -146,8 +146,10 @@ public class HttpClient implements IHttp {
 
                     if(_httpTasksWithKey.containsKey(key)) {
 
-                        for(HttpTask httpTask : _httpTasksWithKey.get(key)) {
-
+                        List<HttpTask> _tasks = _httpTasksWithKey.get(key);
+                        int size = _tasks.size();
+                        for (int i = 0; i < size; i++) {
+                            HttpTask httpTask = _tasks.get(i);
                             httpTask.onFail(e);
 
                             long id = httpTask.getId();
