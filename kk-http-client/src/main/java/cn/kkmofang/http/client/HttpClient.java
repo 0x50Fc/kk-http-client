@@ -3,6 +3,7 @@ package cn.kkmofang.http.client;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -233,7 +234,6 @@ public class HttpClient implements IHttp {
                     } finally {
                         in.close();
                     }
-
                     data = HttpOptions.cachePathWithKey(_context, key);
 
                     File fd = new File(tmppath);
@@ -253,6 +253,8 @@ public class HttpClient implements IHttp {
                 exception = ex;
             }
 
+        }else {
+            exception = new Exception(response.message());
         }
 
         final Object fdata = data;
